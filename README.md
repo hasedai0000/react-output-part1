@@ -1,4 +1,4 @@
-# react-output-first-v2
+# react-output-part1
 
 React アウトプットサンプル
 
