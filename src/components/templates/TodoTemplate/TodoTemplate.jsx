@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { TodoList } from "../../organisms/TodoList";
 import { INIT_TODO_LIST, INIT_UNIQUE_ID } from "../../../constants/data.js";
-
+import { InputForm } from "../../atoms/InputForm";
 import styles from "./style.module.css";
 
 export const TodoTemplate = () => {
@@ -28,12 +28,10 @@ export const TodoTemplate = () => {
     <div className={styles.container}>
       <h1 className={styles.title}>Todo List</h1>
       <section className={styles.common}>
-        <input
-          className={styles.input}
-          type="text"
-          placeholder="検索キーワード"
-          value={searchKeyword}
-          onChange={(e) => handleChangeSearchKeyword(e)}
+        <InputForm
+          inputValue={searchKeyword}
+          placeholder={"検索キーワード"}
+          handleChangeSearchKeyword={handleChangeSearchKeyword}
         />
       </section>
       <section className={styles.common}>
