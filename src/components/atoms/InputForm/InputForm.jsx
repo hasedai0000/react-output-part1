@@ -3,7 +3,8 @@ import styles from "./style.module.css";
 export const InputForm = ({
   inputValue,
   placeholder,
-  handleChangeSearchKeyword,
+  handleChangeValue,
+  handleKeyDown,
 }) => {
   return (
     <input
@@ -11,7 +12,8 @@ export const InputForm = ({
       type="text"
       placeholder={placeholder}
       value={inputValue}
-      onChange={handleChangeSearchKeyword}
+      onChange={handleChangeValue}
+      onKeyDown={handleKeyDown}
     />
   );
 };
