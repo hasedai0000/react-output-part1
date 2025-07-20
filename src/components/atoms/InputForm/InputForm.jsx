@@ -5,6 +5,8 @@ export const InputForm = ({
   placeholder,
   handleChangeValue,
   handleKeyDown,
+  onCompositionStart,
+  onCompositionEnd,
 }) => {
   return (
     <input
@@ -14,6 +16,8 @@ export const InputForm = ({
       value={inputValue}
       onChange={handleChangeValue}
       onKeyDown={handleKeyDown}
+      onCompositionStart={onCompositionStart}
+      onCompositionEnd={onCompositionEnd}
     />
   );
 };

@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import styles from "./style.module.css";
 
-export const TodoList = ({ todoList }) => {
+export const TodoList = ({ todoList, handleDeleteTodo }) => {
   return (
     <ul className={styles.list}>
       {todoList.map((todo) => (
@@ -11,7 +11,11 @@ export const TodoList = ({ todoList }) => {
           <span className={styles.task}>{todo.title}</span>
           <div className={styles.far}>
             {/* https://www.digitalocean.com/community/tutorials/how-to-use-font-awesome-5-with-react-ja */}
-            <FontAwesomeIcon icon={faTrashAlt} size="lg" />
+            <FontAwesomeIcon
+              icon={faTrashAlt}
+              size="lg"
+              onClick={() => handleDeleteTodo(todo.id, todo.title)}
+            />
           </div>
         </li>
       ))}

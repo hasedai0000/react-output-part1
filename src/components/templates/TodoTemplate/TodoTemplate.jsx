@@ -14,6 +14,8 @@ export const TodoTemplate = () => {
   const [uniqueId, setUniqueId] = useState(INIT_UNIQUE_ID);
   /** タスクを追加する */
   const [addInputValue, setAddInputValue] = useState("");
+  /** IME変換中かどうか */
+  const [isComposing, setIsComposing] = useState(false);
 
   /** 検索キーワードで絞り込んだTodo List */
   const filteredTodoList = useMemo(() => {
@@ -33,11 +35,14 @@ export const TodoTemplate = () => {
     setAddInputValue(e.target.value);
   };
 
-  /** タスクを追加する */
+  /**
+   * タスクを追加する
+   * @param {*} e
+   */
   const handleAddTodo = (e) => {
     /** エンターキーが押された時にTodoを追加する  */
-    if (e.key === "Enter" && addInputValue !== "") {
-      const nextUniqueId = uniqueId.length + 1;
+    if (e.key === "Enter" && addInputValue !== "" && !isComposing) {
+      const nextUniqueId = uniqueId + 1;
 
       // スプレッド構文の処理
       const nextTodoList = [
@@ -48,11 +53,41 @@ export const TodoTemplate = () => {
         },
       ];
       setOriginTodoList(nextTodoList);
+      // todo 入力フォームを空にする
+      setAddInputValue("");
 
       // 採番IDを更新する
       setUniqueId(nextUniqueId);
-      // todo 入力フォームを空にする
-      setAddInputValue("");
+    }
+  };
+
+  /**
+   * IME変換開始時の処理
+   */
+  const handleCompositionStart = () => {
+    setIsComposing(true);
+  };
+
+  /**
+   * IME変換終了時の処理
+   */
+  const handleCompositionEnd = () => {
+    setIsComposing(false);
+  };
+
+  /**
+   * タスクを削除する
+   * @param { number } targetId
+   * @param { string } targetTitle
+   */
+  const handleDeleteTodo = (targetId, targetTitle) => {
+    if (window.confirm(`「 ${targetTitle}」のtodoを削除しますか？`)) {
+      // 削除するid以外のtodoリストを再編集
+      // filterを用いた方法
+      const newTodoList = originTodoList.filter((todo) => todo.id !== targetId);
+
+      // 再編集したtodoリストをセットする
+      setOriginTodoList(newTodoList);
     }
   };
 
@@ -65,6 +100,8 @@ export const TodoTemplate = () => {
           addInputValue={addInputValue}
           onChangeTodo={onChangeAddInputValue}
           handleAddTodo={handleAddTodo}
+          onCompositionStart={handleCompositionStart}
+          onCompositionEnd={handleCompositionEnd}
         />
       </section>
       {/* 検索キーワードを入力する */}
@@ -78,7 +115,10 @@ export const TodoTemplate = () => {
       {/* タスクを表示する */}
       <section className={styles.common}>
         {filteredTodoList.length > 0 ? (
-          <TodoList todoList={filteredTodoList} />
+          <TodoList
+            todoList={filteredTodoList}
+            handleDeleteTodo={handleDeleteTodo}
+          />
         ) : (
           <p className={styles.noList}>リストがありません</p>
         )}
